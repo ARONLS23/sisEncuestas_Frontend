@@ -1,0 +1,36 @@
+<div class="container mt-3">
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Título</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let encuesta of encuestas; let i = index">
+                        <td>{{i + 1}}</td>
+                        <td>{{encuesta.titulo}}</td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Acciones">
+                                <a [routerLink]="'/encuestas/' + encuesta.id" class="btn btn-primary">Ver</a>
+                                &nbsp;&nbsp;
+                                <a [routerLink]="'/encuestas/editar/' + encuesta.id" class="btn btn-warning">Editar</a>
+                                &nbsp;&nbsp;
+                                <a (click)="eliminarEncuesta(encuesta.id)" class="btn btn-danger">Eliminar</a>
+                                &nbsp;&nbsp;
+                                <button (click)="verPreguntas(encuesta.id)" class="btn btn-info">Preguntas</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <div class="text-center">
+        <a routerLink="/encuestas/nueva" class="btn btn-success">Nueva encuesta</a>
+    </div>
+</div>

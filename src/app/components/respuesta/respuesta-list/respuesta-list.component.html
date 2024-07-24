@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2>Listado de respuestas</h2>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Contenido</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let respuesta of respuestas; let i = index">
+                        <td>{{i + 1}}</td>
+                        <td>{{respuesta.contenido}}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" [routerLink]="'/respuestas/' + respuesta.id">Ver</button>
+                            &nbsp;
+                            <button type="button" class="btn btn-secondary" (click)="editarRespuesta(respuesta.id)">Editar</button>
+                            &nbsp;
+                            <button type="button" class="btn btn-danger" (click)="eliminarRespuesta(respuesta.id)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <button class="btn btn-success" (click)="agregarRespuesta()">Agregar respuesta</button>
+</div>

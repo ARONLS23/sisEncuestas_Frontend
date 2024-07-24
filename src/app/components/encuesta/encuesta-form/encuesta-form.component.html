@@ -1,0 +1,11 @@
+<div class="container mt-3">
+    <h2>{{encuestaId ? 'Editar ' : 'Nueva '}}encuesta</h2>
+    <form (submit)="guardarEncuesta()">
+        <div class="form-group">
+            <label for="titulo">Titulo:</label>
+            <input type="text" [(ngModel)]="titulo" id="titulo" name="titulo" class="form-control" required>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>

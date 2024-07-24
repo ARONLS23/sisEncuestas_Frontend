@@ -1,0 +1,18 @@
+.container{
+    margin-top: 20px;
+}
+
+.mat-card{
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.mat-list-item{
+    border-bottom: 1px solid #ccc;
+}
+
+.text-center{
+    text-align: center;
+    margin-top: 20px;
+}

@@ -1,0 +1,37 @@
+<div class="container mt-3">
+    <div class="card">
+        <div class="card-header">
+            Listado de Preguntas
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Contenido</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let pregunta of preguntas; let i = index">
+                        <td>{{i + 1}}</td>
+                        <td>{{pregunta.contenido}}</td>
+                        <td>
+                            <a [routerLink]="'/preguntas/' + pregunta.id" class="btn btn-primary">Ver</a>
+                            &nbsp;
+                            <a [routerLink]="'/preguntas/editar/' + pregunta.id + '/encuesta/' + encuestaId" class="btn btn-warning">Editar</a>
+                            &nbsp;
+                            <a (click)="eliminarPregunta(pregunta.id)" class="btn btn-danger">Eliminar</a>
+                            &nbsp;
+                            <a (click)="verRespuestas(pregunta.id)" class="btn btn-secondary">Respuestas</a>
+                            &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="text-center mt-3">
+        <a [routerLink]="['/preguntas/nueva', encuestaId]" class="btn btn-success">Nueva Pregunta</a>
+    </div> 
+</div>

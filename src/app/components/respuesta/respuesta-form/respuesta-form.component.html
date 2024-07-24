@@ -1,0 +1,11 @@
+<div class="container mt-3">
+    <h2>{{respuestaId ? 'Editar ' : 'Nueva '}}respuesta</h2>
+    <form (submit)="guardarRespuesta()">
+        <div class="form-group">
+            <label for="contenido">Contenido:</label>
+            <input type="text" [(ngModel)]="contenido" id="contenido" name="contenido" class="form-control" required>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>
