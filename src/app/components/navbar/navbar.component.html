@@ -1,8 +1,13 @@
-<nav class="navbar navbar-expand navbar-dark bg-dark">
-    <a class="navbar-brand" routerLink="/encuestas">Gestión de encuestas</a>
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" routerLink="/encuestas">Encuestas</a>
-        </li>
+<mat-toolbar color="primary">
+  <a class="navbar-brand" href="/">Gestión de encuestas</a>
+  <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
+    <ul fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px" class="navegacion-menu">
+      <li>
+        <a routerLink="/preguntas" [ngClass]="{ 'active-link': isActive('/preguntas') }">Preguntas</a>
+      </li>
+      <li>
+        <a routerLink="/respuestas" [ngClass]="{ 'active-link': isActive('/respuestas') }">Respuestas</a>
+      </li>
     </ul>
-</nav>
+  </div>
+</mat-toolbar>

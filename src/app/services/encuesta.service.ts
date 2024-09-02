@@ -11,8 +11,9 @@ export class EncuestaService {
 
   constructor(private http: HttpClient) {}
 
-  crearEncuesta(titulo: string): Observable<Encuesta> {
-    return this.http.post<Encuesta>(this.apiUrl, {titulo});
+  crearEncuesta(encuesta: Encuesta): Observable<Encuesta> {
+    //return this.http.post<Encuesta>(this.apiUrl, {titulo});
+    return this.http.post<Encuesta>(this.apiUrl, encuesta);
   }
 
   obtenerTodasLasEncuestas(): Observable<Encuesta[]> {
@@ -23,8 +24,9 @@ export class EncuestaService {
     return this.http.get<Encuesta>(`${this.apiUrl}/${encuestaId}`);
   }
 
-  actualizarEncuesta(encuestaId: number, nuevoTitulo: string):Observable<Encuesta>{
-    return this.http.put<Encuesta>(`${this.apiUrl}/${encuestaId}`, {id: encuestaId, titulo: nuevoTitulo});
+  actualizarEncuesta(encuestaId: number, encuesta: Encuesta):Observable<Encuesta>{
+    //return this.http.put<Encuesta>(`${this.apiUrl}/${encuestaId}`, {id: encuestaId, titulo: nuevoTitulo});
+    return this.http.put<Encuesta>(`${this.apiUrl}/${encuestaId}`, encuesta);
   }
 
   eliminarEncuesta(encuestaId: number):Observable<void>{

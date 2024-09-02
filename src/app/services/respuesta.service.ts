@@ -12,8 +12,8 @@ export class RespuestaService {
 
   constructor(private http: HttpClient) { }
 
-  agregarRespuestaAPregunta(preguntaId: number, contenido: string):Observable<Respuesta>{
-    return this.http.post<Respuesta>(`${this.apiUrl}/agregar/${preguntaId}`, {id:preguntaId, contenido: contenido});
+  agregarRespuestaAPregunta(preguntaId: number, respuesta: Respuesta):Observable<Respuesta>{
+    return this.http.post<Respuesta>(`${this.apiUrl}/agregar/${preguntaId}`, respuesta);
   }
 
   obtenerRespuestasPorPregunta(preguntaId: number):Observable<Respuesta[]>{
@@ -24,8 +24,8 @@ export class RespuestaService {
     return this.http.get<Respuesta>(`${this.apiUrl}/${respuestaId}`);
   }
 
-  actualizarRespuesta(respuestaId: number,nuevoContenido: string):Observable<Respuesta>{
-    return this.http.put<Respuesta>(`${this.apiUrl}/${respuestaId}`, {id:respuestaId, contenido: nuevoContenido});
+  actualizarRespuesta(respuestaId: number, respuesta: Respuesta):Observable<Respuesta>{
+    return this.http.put<Respuesta>(`${this.apiUrl}/${respuestaId}`, respuesta);
   }
 
   eliminarRespuesta(respuestaId: number):Observable<void>{

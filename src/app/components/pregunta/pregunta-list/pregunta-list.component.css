@@ -1,0 +1,23 @@
+#boton-agregar {
+  right: 45px;
+  bottom: 45px;
+  left: auto;
+  position: absolute;
+}
+
+#back {
+  right: auto;
+  bottom: 45px;
+  left: 45px;
+  position: absolute;
+}
+
+.titulo-encuesta {
+  font-size: 24px; /* Tamaño del texto */
+  font-weight: bold; /* Negrita */
+  color: #2c3e50; /* Color del texto */
+  margin-bottom: 16px; /* Espacio inferior */
+  text-align: center; /* Alineación al centro */
+  /* padding: 10px; */ /* Espacio interno */
+  /* border-bottom: 2px solid #3498db; */ /* Línea debajo del título */
+}
