@@ -1,0 +1,30 @@
+a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  padding: 10px 15px;
+  transition: color 0.3s;
+}
+
+a:hover,
+a:active {
+  color: #E1D4EF; /* Color más claro cuando se pasa el ratón */
+}
+
+.navegacion-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.navegacion-menu li {
+  display: inline-block;
+}
+
+.active-link {
+  color: #FFFFFF;
+  border-bottom: 2px solid #E1D4EF; /* Solo subraya el texto */
+  padding-bottom: 5px; /* Espacio entre el texto y la línea */
+}

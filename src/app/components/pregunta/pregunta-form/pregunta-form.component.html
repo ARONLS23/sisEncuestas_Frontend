@@ -1,11 +1,22 @@
-<div class="container mt-3">
-    <h2>{{preguntaId ? 'Editar ' : 'Nueva '}}pregunta</h2>
-    <form (submit)="guardarPregunta()">
-        <div class="form-group">
-            <label for="contenido">Contenido:</label>
-            <input type="text" [(ngModel)]="contenido" id="contenido" name="contenido" class="form-control" required>
-        </div>
-        <br>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-    </form>
-</div>
+<form [formGroup]="form" (ngSubmit)="formPregunta()">
+  <h2 mat-dialog-title="">
+    {{ data.operation === "add" ? "Agregar Nueva Pregunta" : "Editar Pregunta" }}
+  </h2>
+  <mat-dialog-content>
+    <mat-card fxFlex="100%">
+      <div fxLayout="column" fxLayoutGap="10px">
+        <mat-form-field>
+          <mat-label>Ingrese Contenido</mat-label>
+          <input type="text" matInput placeholder="ejem. Angular" formControlName="contenido" required />
+          <mat-error>Debe ingresar el contenido de la pregunta</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-card>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="true">Cerrar</button>
+    <button mat-button type="submit" [disabled]="form.invalid">
+      {{ data.operation === "add" ? "Guardar" : "Actualizar" }}
+    </button>
+  </mat-dialog-actions>
+</form>

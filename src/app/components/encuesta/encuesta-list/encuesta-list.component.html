@@ -1,36 +1,55 @@
-<div class="container mt-3">
-    <div class="card">
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Título</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let encuesta of encuestas; let i = index">
-                        <td>{{i + 1}}</td>
-                        <td>{{encuesta.titulo}}</td>
-                        <td>
-                            <div class="btn-group" role="group" aria-label="Acciones">
-                                <a [routerLink]="'/encuestas/' + encuesta.id" class="btn btn-primary">Ver</a>
-                                &nbsp;&nbsp;
-                                <a [routerLink]="'/encuestas/editar/' + encuesta.id" class="btn btn-warning">Editar</a>
-                                &nbsp;&nbsp;
-                                <a (click)="eliminarEncuesta(encuesta.id)" class="btn btn-danger">Eliminar</a>
-                                &nbsp;&nbsp;
-                                <button (click)="verPreguntas(encuesta.id)" class="btn btn-info">Preguntas</button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <br>
-    <div class="text-center">
-        <a routerLink="/encuestas/nueva" class="btn btn-success">Nueva encuesta</a>
-    </div>
+<div fxLayoutAlign="center center" style="margin-top: 10px;">
+  <mat-form-field fxFlex="60%">
+    <input
+      matInput
+      type="text"
+      (keyup)="buscar($event)"
+      placeholder="Ingrese texto"
+    />
+  </mat-form-field>
 </div>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+
+  <ng-container matColumnDef="titulo">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Título </th>
+    <td mat-cell *matCellDef="let element"> {{element.titulo}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="accion">
+    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-button (click)="abrirDialog('edit', element.id)">
+        <mat-icon>edit</mat-icon>
+        Editar
+      </button>
+      <button mat-button color="warn"  (click)="eliminarEncuesta(element.id)" onfocus="this.blur()">
+        <mat-icon>delete</mat-icon>
+        Eliminar
+      </button>
+      <button mat-button color="primary" (click)="verDetallePregunta(element.id)">
+        <mat-icon>info</mat-icon>
+        Ver
+      </button>
+      <button  mat-button  color="accent" (click)="verPreguntas(element.id, element.titulo)">
+        <mat-icon>density_medium</mat-icon>
+        Preguntas
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
+
+<mat-paginator
+  #paginacion
+  [pageSize]="7"
+  [pageSizeOptions]="[7, 15, 20, 30]"
+  aria-label="Select page"
+>
+</mat-paginator>
+
+<button mat-fab id="boton-agregar" color="warn" (click)="abrirDialog('add')">
+  <mat-icon>add</mat-icon>
+</button>

@@ -1,43 +1,63 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { EncuestaService } from '../../../services/encuesta.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MaterialModule } from '../../../material.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { Encuesta } from '../../../models/encuesta';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-encuesta-form',
   standalone: true,
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule, MaterialModule, FlexLayoutModule],
   templateUrl: './encuesta-form.component.html',
   styleUrl: './encuesta-form.component.css'
 })
 export class EncuestaFormComponent {
 
-  titulo: string = '';
-  encuestaId: number | undefined;
+  form: FormGroup;
+  id: number;
+  operacion: string = '';
 
-  constructor(private encuestaService: EncuestaService, private route: ActivatedRoute, private router: Router){}
-
-  ngOnInit():void{
-    this.obtenerEncuesta();
+  constructor(private encuestaService: EncuestaService, private fb: FormBuilder, private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any){
+    this.form = this.fb.group({
+      titulo: ['', Validators.required],
+    });
+    this.id = this.data.encuestaId;
+    this.operacion = this.data.operation;
   }
 
-  obtenerEncuesta():void{
-    this.encuestaId = Number(this.route.snapshot.paramMap.get('id'));
-    if (this.encuestaId) {
-      this.encuestaService.obtenerDetallesDeLaEncuesta(this.encuestaId).subscribe(encuesta =>{
-        this.titulo = encuesta.titulo;
-      })
+  ngOnInit():void{
+    if (this.operacion ==='edit') {
+      this.buscarEncuesta(this.id);
     }
   }
 
-  guardarEncuesta():void{
-    if (this.encuestaId) {
-      this.encuestaService.actualizarEncuesta(this.encuestaId, this.titulo).subscribe(() =>{
-        this.router.navigate(['/encuestas']);
+  buscarEncuesta(id: number){
+    this.encuestaService.obtenerDetallesDeLaEncuesta(id).subscribe( (data: Encuesta) =>{
+      this.form.patchValue({
+        titulo: data.titulo
+      })
+    })
+  }
+
+  formEncuesta(): void {
+    const encuesta: Encuesta = {
+      id: this.id,
+      titulo: this.form.value.titulo
+    }
+
+    if(this.operacion === 'edit'){
+      this.encuestaService.actualizarEncuesta(this.id, encuesta).subscribe( () =>{
+        Swal.fire("Encuesta actualizada!");
+        this.dialog.closeAll();
       })
     }else{
-      this.encuestaService.crearEncuesta(this.titulo).subscribe(()=>{
-        this.router.navigate(['/encuestas']);
+      this.encuestaService.crearEncuesta(encuesta).subscribe( () => {
+        Swal.fire("Encuesta registrada!");
+        this.dialog.closeAll();
       })
     }
   }

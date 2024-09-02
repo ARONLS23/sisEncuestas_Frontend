@@ -1,52 +1,83 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { PreguntaService } from '../../../services/pregunta.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MaterialModule } from '../../../material.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { Pregunta } from '../../../models/pregunta';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-pregunta-form',
   standalone: true,
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule, MaterialModule, FlexLayoutModule],
   templateUrl: './pregunta-form.component.html',
-  styleUrl: './pregunta-form.component.css'
+  styleUrl: './pregunta-form.component.css',
 })
 export class PreguntaFormComponent {
+  form: FormGroup;
+  id: number;
+  encuestaId: number;
+  operacion: string = '';
 
-  contenido: string ='';
-  preguntaId: number | undefined;
-  encuestaId: number | undefined;
-
-  constructor (private preguntaService: PreguntaService, private router: Router, private route: ActivatedRoute) {}
-
-  ngOnInit():void{
-    this.obtenerPregunta();
-    this.route.paramMap.subscribe(params =>{
-      this.encuestaId = Number(params.get('encuestaId'));
-      this.preguntaId = Number(params.get('id'));
-    })
+  constructor(
+    private preguntaService: PreguntaService,
+    private fb: FormBuilder,
+    private dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.form = this.fb.group({
+      contenido: ['', Validators.required],
+    });
+    this.id = this.data.preguntaId;
+    this.operacion = this.data.operation;
+    this.encuestaId = this.data.encuestaId;
   }
 
-  obtenerPregunta():void{
-    this.preguntaId = Number(this.route.snapshot.paramMap.get('id'));
-    if (this.preguntaId) {
-      this.preguntaService.obtenerDetallesDeLaPregunta(this.preguntaId).subscribe( pregunta =>{
-        this.contenido = pregunta.contenido
-      })
+  ngOnInit(): void {
+    if (this.operacion === 'edit') {
+      this.obtenerPregunta(this.id);
     }
   }
 
-  guardarPregunta():void{
+  obtenerPregunta(id: number): void {
+    this.preguntaService
+      .obtenerDetallesDeLaPregunta(id)
+      .subscribe((data: Pregunta) => {
+        this.form.patchValue({
+          contenido: data.contenido,
+        });
+      });
+  }
+
+  formPregunta(): void {
+    const pregunta: Pregunta = {
+      id: this.id,
+      contenido: this.form.value.contenido,
+      encuesta: this.form.value.encuesta,
+    };
+
     if (this.encuestaId) {
-      if (this.preguntaId) {
-        this.preguntaService.actualizarPregunta(this.preguntaId, this.contenido, this.encuestaId).subscribe(()=>{
-          this.router.navigate(['/encuestas/'+this.encuestaId+'/preguntas'])
-        })
-      }else{
-        this.preguntaService.agregarPreguntaAEncuesta(this.encuestaId, this.contenido).subscribe(()=>{
-          this.router.navigate(['/encuestas/'+this.encuestaId+'/preguntas'])
-        })
+      if (this.operacion === 'edit') {
+        this.preguntaService
+          .actualizarPregunta(this.id, pregunta, this.encuestaId)
+          .subscribe(() => {
+            Swal.fire('Pregunta actualizada!');
+            this.dialog.closeAll();
+          });
+      } else {
+        this.preguntaService
+          .agregarPreguntaAEncuesta(this.encuestaId, pregunta)
+          .subscribe(() => {
+            Swal.fire('Pregunta registrada!');
+            this.dialog.closeAll();
+          });
       }
     }
   }
-
 }
